@@ -10,8 +10,7 @@ enum RAN_message_type{
 enum RAN_parameter{
     GNB_ID = 1;
     UE_LIST = 3;
-    CELL_LOAD = 4;
-    TIMESTAMP = 5;
+    TIMESTAMP = 4;
 }
 
 message RAN_param_map_entry{
@@ -20,8 +19,7 @@ message RAN_param_map_entry{
         int64 int64_value  = 2;
         string string_value = 3;
         ue_list_m ue_list = 4;
-        float cell_load = 5;       // Cell load (allocated PRBs percentage)
-        int64 timestamp = 6;       // Timestamp in milliseconds
+        int64 timestamp = 5;       // Timestamp in milliseconds
     }
 }
 
@@ -54,16 +52,22 @@ message ue_info_m{
     // this is to identify the ue
     required int32 rnti=1;
 
-    // specific ue's measurements (these will come from the gnb)
+    // UE measurement metrics (reported by the gNB)
     optional float rsrp=2;         // Reference Signal Received Power
-    optional float ber_ul=3;       // Bit Error Rate Uplink
-    optional float ber_dl=4;       // Bit Error Rate Downlink
+    optional float bler_ul=3;      // Block Error Rate Uplink
+    optional float bler_dl=4;      // Block Error Rate Downlink
     optional float mcs_ul=5;       // Modulation and Coding Scheme Uplink
     optional float mcs_dl=6;       // Modulation and Coding Scheme Downlink
 
+    // scheduler utilisation stats (reported by gNB)
+    optional uint32 dl_prbs_total = 7; // Total allocated DL PRBs over the reporting window
+    optional uint32 ul_prbs_total = 8; // Total allocated UL PRBs over the reporting window
+
     // specific ue's propoerties (these will be set by the xapp and sent to gnb)
-    optional bool prop_1 = 7;
-    optional float prop_2 = 8;
+    optional bool prop_1 = 9;
+    optional float prop_2 = 10;
+
+
 }
 
 message ue_list_m{
